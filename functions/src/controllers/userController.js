@@ -62,9 +62,6 @@ exports.createUserWithGoogle = functions.https.onCall(async (data, context) => {
 // Trigger when a user is deleted
 // exports.onUserDelete = functions.auth.user().onDelete((user) => {
 //    try {
-
-    
 //    } catch (error) {
-    
 //    }
 // });
