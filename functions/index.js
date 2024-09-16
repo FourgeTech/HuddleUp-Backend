@@ -1,5 +1,5 @@
 const functions = require('firebase-functions');
-const { createUser, createUserWithGoogle } = require('./src/controllers/userController');
+const { createUser, createUserWithGoogle, checkGoogleUserExists } = require('./src/controllers/userController');
 const firebaseAdmin = require('./src/firebaseAdmin');
 
 // exports.helloWorld = functions.https.onCall((data, context) => {
@@ -11,3 +11,4 @@ const firebaseAdmin = require('./src/firebaseAdmin');
 // Create a new user
 exports.createUser = createUser;
 exports.createUserWithGoogle = createUserWithGoogle;
+exports.checkGoogleUserExists = checkGoogleUserExists;

@@ -1,7 +1,7 @@
 class UserModel {
-    constructor( name, surname, username, email, role, teamIds, profilePicUrl, phoneNumber, settings) {
-        this.name = name || '';
-        this.surname = surname || '';
+    constructor( firstname, lastname, username, email, role, teamIds, profilePicUrl, phoneNumber, settings) {
+        this.firstname = firstname || '';
+        this.lastname = lastname || '';
         this.username = username;
         this.email = email || '';
         this.role = role;
@@ -19,8 +19,8 @@ class UserModel {
   
     get plainObject() {
       return {
-        name: this.name,
-        surname: this.surname,
+        firstname: this.firstname,
+        lastname: this.lastname,
         username: this.username,
         email: this.email,
         role: this.role,
