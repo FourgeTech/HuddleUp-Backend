@@ -1,18 +1,18 @@
 const functions = require('firebase-functions');
-const admin = require('../firebaseAdmin');
-const {userService} = require('../services/userService');
+const firebaseAdmin = require('../firebaseAdmin');
+const {createUserDocument} = require('../services/userService');
 
 // Create a new user
 exports.createUser = functions.https.onCall(async (data, context) => {
     try {
         // Create the user in Firebase Auth
-        const user = await admin.auth().createUser({
+        const user = await firebaseAdmin.auth().createUser({
             email: data.email,
             password: data.password,
         });
 
         // Create the Firestore document for the user
-        await userService.createUserDocument(data, user.uid);
+        await createUserDocument(data, user.uid);
 
         // Send a success response with user details
         return {
@@ -34,6 +34,31 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     }
 });
 
+exports.createUserWithGoogle = functions.https.onCall(async (data, context) => {
+    try {
+      // Check if user already exists in Firestore
+      const userDocRef = firebaseAdmin.firestore().collection('users').doc(data.uid);
+      const userDoc = await userDocRef.get();
+  
+      if (!userDoc.exists) {
+        await createUserDocument(data, data.uid);
+      }
+  
+      // Send a success response
+      return {
+        status: 'success',
+        message: 'User successfully signed in with Google.',
+      };
+    } catch (error) {
+      console.error('Error verifying Google token or creating user:', error);
+      return {
+        status: 'error',
+        message: error.message || 'An error occurred while verifying the Google ID token.',
+        code: error.code || 500,
+      };
+    }
+  });
+  
 // Trigger when a user is deleted
 // exports.onUserDelete = functions.auth.user().onDelete((user) => {
 //    try {

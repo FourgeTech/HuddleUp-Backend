@@ -1,9 +1,9 @@
 class UserModel {
     constructor( name, surname, username, email, role, teamIds, profilePicUrl, phoneNumber, settings) {
-        this.name = name;
-        this.surname = surname;
+        this.name = name || '';
+        this.surname = surname || '';
         this.username = username;
-        this.email = email;
+        this.email = email || '';
         this.role = role;
         this.teamIds = teamIds || [];
         this.profilePicUrl = profilePicUrl || '';
@@ -16,6 +16,20 @@ class UserModel {
             theme: 'light',
         };
     }
-}
+  
+    get plainObject() {
+      return {
+        name: this.name,
+        surname: this.surname,
+        username: this.username,
+        email: this.email,
+        role: this.role,
+        teamIds: this.teamIds,
+        profilePicUrl: this.profilePicUrl,
+        phoneNumber: this.phoneNumber,
+        settings: this.settings,
+      };
+    }
+  }
 
 module.exports = UserModel;
