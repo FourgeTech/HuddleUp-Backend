@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const firebaseFunctionsTest = require('firebase-functions-test')();
 const admin = require('firebase-admin');
 const { createUser, createUserWithGoogle } = require('../src/controllers/userController');
+const { createUserDocument } = require('../src/services/userService'); // Correct path for createUserDocument
 
 jest.mock('../src/services/userService', () => ({
   createUserDocument: jest.fn()
