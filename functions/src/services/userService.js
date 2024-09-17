@@ -7,6 +7,7 @@ const firestore = firebaseAdmin.firestore();
     const plainUserModel = userDoc.plainObject;
     await firestore.collection('users').doc(uid).set(plainUserModel);
   };
+  
 
 // Export the function
 module.exports = {

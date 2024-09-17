@@ -58,6 +58,32 @@ exports.createUserWithGoogle = functions.https.onCall(async (data, context) => {
       };
     }
   });
+
+  exports.updateUserSettings = functions.https.onCall(async (data, context) => {
+    // Ensure the user is authenticated
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'The user must be authenticated to update settings.');
+    }
+
+    const uid = context.auth.uid;
+    const { firstname, lastname, profilePicUrl, settings } = data;
+
+    // Prepare the update data
+    const updateData = {};
+    if (firstname !== undefined) updateData.firstname = firstname;
+    if (lastname !== undefined) updateData.lastname = lastname;
+    if (profilePicUrl !== undefined) updateData.profilePicUrl = profilePicUrl;
+    if (settings !== undefined) updateData.settings = settings;
+
+    try {
+        // Update the user's settings in Firestore
+        await firebaseAdmin.firestore().collection('users').doc(uid).update(updateData);
+        return { success: true };
+    } catch (error) {
+        console.error('Error updating user settings:', error);
+        throw new functions.https.HttpsError('unknown', 'Error updating user settings.');
+    }
+});
   
 // Trigger when a user is deleted
 // exports.onUserDelete = functions.auth.user().onDelete((user) => {
