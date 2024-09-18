@@ -58,33 +58,76 @@ exports.createUserWithGoogle = functions.https.onCall(async (data, context) => {
       };
     }
   });
-
-  exports.updateUserSettings = functions.https.onCall(async (data, context) => {
-    // Ensure the user is authenticated
-    if (!context.auth) {
-        throw new functions.https.HttpsError('unauthenticated', 'The user must be authenticated to update settings.');
-    }
-
-    const uid = context.auth.uid;
-    const { firstname, lastname, profilePicUrl, settings } = data;
-
-    // Prepare the update data
-    const updateData = {};
-    if (firstname !== undefined) updateData.firstname = firstname;
-    if (lastname !== undefined) updateData.lastname = lastname;
-    if (profilePicUrl !== undefined) updateData.profilePicUrl = profilePicUrl;
-    if (settings !== undefined) updateData.settings = settings;
-
-    try {
-        // Update the user's settings in Firestore
-        await firebaseAdmin.firestore().collection('users').doc(uid).update(updateData);
-        return { success: true };
-    } catch (error) {
-        console.error('Error updating user settings:', error);
-        throw new functions.https.HttpsError('unknown', 'Error updating user settings.');
-    }
-});
   
+exports.getUser = functions.https.onCall(async (data, context) => {
+  const uid = data.uid;
+  if (!uid) {
+      throw new functions.https.HttpsError('invalid-argument', 'UID must be provided');
+  }
+
+  try {
+      const userDoc = await firebaseAdmin.firestore().collection('users').doc(uid).get();
+      if (!userDoc.exists) {
+          throw new functions.https.HttpsError('not-found', 'User not found');
+      }
+      return userDoc.data();
+  } catch (error) {
+      throw new functions.https.HttpsError('unknown', error.message);
+  }
+});
+
+// Function to update a user document
+exports.updateUser = functions.https.onCall(async (data, context) => {
+  const uid = data.uid;
+  const userData = data.userData;
+
+  if (!uid || !userData) {
+      throw new functions.https.HttpsError('invalid-argument', 'UID and user data must be provided');
+  }
+
+  try {
+      await firebaseAdmin.firestore().collection('users').doc(uid).update(userData);
+      return { success: true };
+  } catch (error) {
+      throw new functions.https.HttpsError('unknown', error.message);
+  }
+});
+
+// Function to get settings for a user
+exports.getSettings = functions.https.onCall(async (data, context) => {
+  const uid = data.uid;
+  if (!uid) {
+      throw new functions.https.HttpsError('invalid-argument', 'UID must be provided');
+  }
+
+  try {
+      const settingsDoc = await admin.firestore().collection('users').doc(uid).doc('settings').get();
+      if (!settingsDoc.exists) {
+          throw new functions.https.HttpsError('not-found', 'Settings not found');
+      }
+      return settingsDoc.data();
+  } catch (error) {
+      throw new functions.https.HttpsError('unknown', error.message);
+  }
+});
+
+// Function to update settings for a user
+exports.updateSettings = functions.https.onCall(async (data, context) => {
+  const uid = data.uid;
+  const settingsData = data.settingsData;
+
+  if (!uid || !settingsData) {
+      throw new functions.https.HttpsError('invalid-argument', 'UID and settings data must be provided');
+  }
+
+  try {
+      await admin.firestore().collection('users').doc(uid).doc('settings').set(settingsData, { merge: true });
+      return { success: true };
+  } catch (error) {
+      throw new functions.https.HttpsError('unknown', error.message);
+  }
+});
+
 // Trigger when a user is deleted
 // exports.onUserDelete = functions.auth.user().onDelete((user) => {
 //    try {

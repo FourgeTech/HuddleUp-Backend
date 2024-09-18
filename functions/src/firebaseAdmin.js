@@ -1,5 +1,4 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('../serviceAccount.json');
 
 // Use emulators if running in the local environment
 if (process.env.FUNCTIONS_EMULATOR) {
@@ -10,11 +9,14 @@ if (process.env.FUNCTIONS_EMULATOR) {
     process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
   }
 
-
-
 // Initialize Firebase Admin
-admin.initializeApp({
+if (process.env.NODE_ENV !== 'test') {
+  const serviceAccount = require('../serviceAccount.json');
+  admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
   });
+} else {
+  admin.initializeApp();
+}
 
 module.exports = admin;
