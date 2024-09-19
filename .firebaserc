@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "huddleup-43c6a"
-  }
+    "default": "huddleup-d45ca",
+    "huddleup-back": "huddleup-d45ca"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

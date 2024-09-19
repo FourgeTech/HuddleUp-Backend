@@ -101,11 +101,17 @@ exports.getSettings = functions.https.onCall(async (data, context) => {
   }
 
   try {
-      const settingsDoc = await admin.firestore().collection('users').doc(uid).doc('settings').get();
-      if (!settingsDoc.exists) {
+      const userDoc = await firebaseAdmin.firestore().collection('users').doc(uid).get();
+      if (!userDoc.exists) {
+          throw new functions.https.HttpsError('not-found', 'User not found');
+      }
+      
+      const settings = userDoc.data()?.settings;
+      if (!settings) {
           throw new functions.https.HttpsError('not-found', 'Settings not found');
       }
-      return settingsDoc.data();
+      
+      return { settings };
   } catch (error) {
       throw new functions.https.HttpsError('unknown', error.message);
   }
@@ -121,7 +127,9 @@ exports.updateSettings = functions.https.onCall(async (data, context) => {
   }
 
   try {
-      await admin.firestore().collection('users').doc(uid).doc('settings').set(settingsData, { merge: true });
+      await firebaseAdmin.firestore().collection('users').doc(uid).update({
+        settings: settingsData
+    });
       return { success: true };
   } catch (error) {
       throw new functions.https.HttpsError('unknown', error.message);

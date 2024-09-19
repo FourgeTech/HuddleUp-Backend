@@ -15,5 +15,5 @@ exports.checkGoogleUserExists = checkGoogleUserExists;
 exports.updateUserSettings = updateUserSettings;
 exports.getUser = getUser;
 exports.updateUser = updateUser;
-exports.updateSettings = updateUserSettings;
+exports.updateSettings = updateSettings;
 exports.getSettings = getSettings;
