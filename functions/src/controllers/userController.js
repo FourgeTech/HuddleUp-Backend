@@ -70,6 +70,7 @@ exports.getUser = functions.https.onCall(async (data, context) => {
       if (!userDoc.exists) {
           throw new functions.https.HttpsError('not-found', 'User not found');
       }
+      console.log(userDoc.data());
       return userDoc.data();
   } catch (error) {
       throw new functions.https.HttpsError('unknown', error.message);
