@@ -2,6 +2,8 @@ const functions = require('firebase-functions');
 const { createUser, createUserWithGoogle, checkGoogleUserExists, updateUserSettings, getUser, updateUser, getSettings,updateSettings } = require('./src/controllers/userController');
 const firebaseAdmin = require('./src/firebaseAdmin');
 
+const { registerTeam, updateTeam, getTeam, joinTeamByCode } = require('./src/controllers/teamController');
+
 // exports.helloWorld = functions.https.onCall((data, context) => {
 //     return {
 //         message: 'Hello, World!'
@@ -17,3 +19,9 @@ exports.getUser = getUser;
 exports.updateUser = updateUser;
 exports.updateSettings = updateSettings;
 exports.getSettings = getSettings;
+
+//Team Functions
+exports.registerTeam = registerTeam;
+exports.updateTeam = updateTeam;
+exports.getTeam = getTeam;
+exports.joinTeamByCode = joinTeamByCode;
