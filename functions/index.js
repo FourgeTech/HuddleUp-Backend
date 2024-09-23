@@ -4,6 +4,8 @@ const { createChat, addMessageToChat, loadMessages, addChatIdToUsers, getChatDet
 const { createAnnouncement, deleteAnnouncement, getAnnouncements,getAnnouncementsByTeamId, updateViewCount } = require('./src/controllers/announcementController');
 const firebaseAdmin = require('./src/firebaseAdmin');
 
+const { registerTeam, updateTeam, getTeam, joinTeamByCode } = require('./src/controllers/teamController');
+
 // exports.helloWorld = functions.https.onCall((data, context) => {
 //     return {
 //         message: 'Hello, World!'
@@ -20,6 +22,11 @@ exports.updateUser = updateUser;
 exports.updateSettings = updateSettings;
 exports.getSettings = getSettings;
 
+//Team Functions
+exports.registerTeam = registerTeam;
+exports.updateTeam = updateTeam;
+exports.getTeam = getTeam;
+exports.joinTeamByCode = joinTeamByCode;
 // Firebase Functions related to chat management
 exports.createChat = createChat;
 exports.addMessageToChat = addMessageToChat;
