@@ -32,7 +32,10 @@ exports.registerTeam = functions.https.onCall(async (data, context) => {
             teamIds: FieldValue.arrayUnion(teamId),
         });
 
-        return { status: 'success', message: 'Team created successfully.' };
+        return { 
+            status: 'success', 
+            message: 'Team created successfully.',
+            teamCode: teamCode, };
     } catch (error) {
         console.error('Error creating team:', error);
         throw new functions.https.HttpsError('internal', 'Failed to create team.');
