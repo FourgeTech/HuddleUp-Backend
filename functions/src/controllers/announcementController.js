@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const firebaseAdmin = require('../firebaseAdmin');
+const NotificationService = require('../services/NotificationService');
 
 // Create a new announcement (no admin check)
 exports.createAnnouncement = functions.https.onCall(async (data, context) => {
@@ -16,6 +17,17 @@ exports.createAnnouncement = functions.https.onCall(async (data, context) => {
 
         // Add the announcement to the Firestore collection
         await firebaseAdmin.firestore().collection('announcements').doc(data.announcementId).set(announcementData);
+
+        const tokensSnapshot = await firebaseAdmin.firestore().collection('users').get();
+        const tokens = [];
+
+        tokensSnapshot.forEach(doc => {
+            const fcmtokens = doc.data().fcmtokens;
+            if (fcmtokens && Array.isArray(fcmtokens)) {
+                tokens.push(...fcmtokens);
+            }
+        });
+        await NotificationService.sendNotification(tokens, data.title, data.message);
 
         // Send a success response with announcement details
         return {

@@ -10,12 +10,12 @@
     "test": "jest"
   },
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "main": "index.js",
   "dependencies": {
     "firebase": "^10.13.2",
-    "firebase-admin": "^12.5.0",
+    "firebase-admin": "^12.7.0",
     "firebase-functions": "^5.0.0"
   },
   "devDependencies": {

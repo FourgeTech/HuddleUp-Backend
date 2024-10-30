@@ -16,6 +16,7 @@ class UserModel {
             preferredLanguage: 'en',
             theme: 'light',
         };
+      this.fcmtokens = [];
     }
   
     get plainObject() {
@@ -30,6 +31,7 @@ class UserModel {
         profilePicUrl: this.profilePicUrl,
         phoneNumber: this.phoneNumber,
         settings: this.settings,
+        fcmtokens: this.fcmtokens,
       };
     }
   }

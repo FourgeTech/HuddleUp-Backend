@@ -1,5 +1,5 @@
 const functions = require('firebase-functions');
-const { createUser, createUserWithGoogle, checkGoogleUserExists, updateUserSettings, getUser, updateUser, getSettings,updateSettings } = require('./src/controllers/userController');
+const { createUser, createUserWithGoogle, checkGoogleUserExists, updateUserSettings, getUser, updateUser, getSettings,updateSettings, addFcmToken } = require('./src/controllers/userController');
 const { createChat, addMessageToChat, loadMessages, addChatIdToUsers, getChatDetails } = require('./src/controllers/chatController');
 const { createAnnouncement, deleteAnnouncement, getAnnouncements,getAnnouncementsByTeamId, updateViewCount } = require('./src/controllers/announcementController');
 const firebaseAdmin = require('./src/firebaseAdmin');
@@ -21,6 +21,7 @@ exports.getUser = getUser;
 exports.updateUser = updateUser;
 exports.updateSettings = updateSettings;
 exports.getSettings = getSettings;
+exports.addFcmToken = addFcmToken;
 
 //Team Functions
 exports.registerTeam = registerTeam;

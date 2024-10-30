@@ -137,6 +137,37 @@ exports.updateSettings = functions.https.onCall(async (data, context) => {
   }
 });
 
+// Function to add FCM token to a user document
+exports.addFcmToken = functions.https.onCall(async (data, context) => {
+  const uid = data.uid;
+  const fcmToken = data.fcmToken;
+
+  if (!uid || !fcmToken) {
+      throw new functions.https.HttpsError('invalid-argument', 'UID and FCM token must be provided');
+  }
+
+  try {
+    const userDocRef = firebaseAdmin.firestore().collection('users').doc(uid);
+    const userDoc = await userDocRef.get();
+
+    if (!userDoc.exists) {
+        throw new functions.https.HttpsError('not-found', 'User not found');
+    }
+
+    const userData = userDoc.data();
+    const fcmtokens = userData.fcmtokens || [];
+
+    if (!fcmtokens.includes(fcmToken)) {
+        fcmtokens.push(fcmToken);
+        await userDocRef.update({ fcmtokens });
+    }
+
+    return { success: true };
+} catch (error) {
+    throw new functions.https.HttpsError('unknown', error.message);
+}
+});
+
 // Trigger when a user is deleted
 // exports.onUserDelete = functions.auth.user().onDelete((user) => {
 //    try {
