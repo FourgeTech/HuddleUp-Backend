@@ -95,16 +95,13 @@ exports.joinTeamByCode = functions.https.onCall(async (data, context) => {
   
       const teamDoc = teamSnapshot.docs[0];
       const teamData = teamDoc.data();
-  
-      // Add the user to the team
-      const members = teamData.members || {};
-      members[userId] = 'Player'; // Assign role "Player" to the user
 
-      // Add the user to the players array
-      await firebaseAdmin.firestore().collection('teams').doc(teamDoc.id).update({
-        players: FieldValue.arrayUnion(userId)});
+    // Add the user to the players map with a default value of -1
+    await firebaseAdmin.firestore().collection('teams').doc(teamDoc.id).update({
+    [`players.${userId}`]: -1
+    });
 
-        // Update the user document with the new team
+    // Update the user document with the new team
       await firebaseAdmin.firestore().collection('users').doc(userId).update({
         teamIds: FieldValue.arrayUnion(teamDoc.id)});
   

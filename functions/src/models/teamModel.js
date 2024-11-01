@@ -7,7 +7,7 @@ class TeamModel {
         this.createdBy = createdBy || '';
         this.members = members || {};
         this.managers = managers || [];
-        this.players = players || [];
+        this.players = players || {};
         this.events = events || [];
     }
 
