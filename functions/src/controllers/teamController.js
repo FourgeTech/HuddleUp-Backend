@@ -118,4 +118,38 @@ exports.joinTeamByCode = functions.https.onCall(async (data, context) => {
       throw new functions.https.HttpsError('unknown', 'Failed to join team');
     }
   });
-  
+
+exports.getTeamPlayers = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User not authenticated.');
+    }
+
+    const { teamId } = data;
+
+    try {
+        const teamDoc = await firebaseAdmin.firestore().collection('teams').doc(teamId).get();
+        if (!teamDoc.exists) {
+            throw new functions.https.HttpsError('not-found', 'Team not found.');
+        }
+
+        const teamData = teamDoc.data();
+        const playerIds = teamData.players || [];
+
+        if (playerIds.length === 0) {
+            return { status: 'success', players: [] };
+        }
+
+        const playerDocs = await firebaseAdmin.firestore().collection('users').where(firebaseAdmin.firestore.FieldPath.documentId(), 'in', playerIds).get();
+        const players = playerDocs.docs.map(doc => {
+            const userData = doc.data();
+            return `${userData.firstName} ${userData.lastName}`;
+        });
+
+        return { status: 'success', players };
+    } catch (error) {
+        console.error('Error fetching team players:', error);
+        throw new functions.https.HttpsError('internal', 'Failed to get team players.');
+    }
+});
+
+
