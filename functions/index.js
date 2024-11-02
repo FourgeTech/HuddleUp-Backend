@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const { createUser, createUserWithGoogle, checkGoogleUserExists, updateUserSettings, getUser, updateUser, getSettings,updateSettings, addFcmToken } = require('./src/controllers/userController');
 const { createChat, addMessageToChat, loadMessages, addChatIdToUsers, getChatDetails } = require('./src/controllers/chatController');
 const { createAnnouncement, deleteAnnouncement, getAnnouncements,getAnnouncementsByTeamId, updateViewCount } = require('./src/controllers/announcementController');
-const { addEvent, getEvents } = require('./src/controllers/eventController');
+const { addEvent, getEvents, getEventsByTeamId } = require('./src/controllers/eventController');
 const firebaseAdmin = require('./src/firebaseAdmin');
 
 const { registerTeam, updateTeam, getTeam, joinTeamByCode } = require('./src/controllers/teamController');
