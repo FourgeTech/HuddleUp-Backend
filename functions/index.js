@@ -46,3 +46,4 @@ exports.updateViewCount = updateViewCount;
 // Firebase Functions related to event management
 exports.addEvent = addEvent;
 exports.getEvents = getEvents;
+exports.getEventsByTeamId = getEventsByTeamId;
