@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const firebaseAdmin = require('../firebaseAdmin'); 
-const EventModel = require('../models/EventModel');
+const EventModel = require('../models/eventModel');
 
 // Define the addEvent function
 exports.addEvent = functions.https.onCall(async (data, context) => {
