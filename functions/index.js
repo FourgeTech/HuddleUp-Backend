@@ -1,20 +1,49 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const functions = require('firebase-functions');
+const { createUser, createUserWithGoogle, checkGoogleUserExists, updateUserSettings, getUser, updateUser, getSettings,updateSettings, addFcmToken } = require('./src/controllers/userController');
+const { createChat, addMessageToChat, loadMessages, addChatIdToUsers, getChatDetails } = require('./src/controllers/chatController');
+const { createAnnouncement, deleteAnnouncement, getAnnouncements,getAnnouncementsByTeamId, updateViewCount } = require('./src/controllers/announcementController');
+const { addEvent, getEvents, getEventsByTeamId } = require('./src/controllers/eventController');
+const firebaseAdmin = require('./src/firebaseAdmin');
 
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+const { registerTeam, updateTeam, getTeam, joinTeamByCode } = require('./src/controllers/teamController');
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
-
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
+// exports.helloWorld = functions.https.onCall((data, context) => {
+//     return {
+//         message: 'Hello, World!'
+//     };
 // });
 
+// Firebase Functions related to user management
+exports.createUser = createUser;
+exports.createUserWithGoogle = createUserWithGoogle;
+exports.checkGoogleUserExists = checkGoogleUserExists;
+exports.updateUserSettings = updateUserSettings;
+exports.getUser = getUser;
+exports.updateUser = updateUser;
+exports.updateSettings = updateSettings;
+exports.getSettings = getSettings;
+exports.addFcmToken = addFcmToken;
+
+//Team Functions
+exports.registerTeam = registerTeam;
+exports.updateTeam = updateTeam;
+exports.getTeam = getTeam;
+exports.joinTeamByCode = joinTeamByCode;
+// Firebase Functions related to chat management
+exports.createChat = createChat;
+exports.addMessageToChat = addMessageToChat;
+exports.loadMessages = loadMessages;
+exports.addChatIdToUsers = addChatIdToUsers;
+exports.getChatDetails = getChatDetails;
+
+//Create a new announcement
+exports.createAnnouncement = createAnnouncement;
+exports.deleteAnnouncement = deleteAnnouncement;
+exports.getAnnouncements = getAnnouncements;
+exports.getAnnouncementsByTeamId = getAnnouncementsByTeamId;
+exports.updateViewCount = updateViewCount;
+
+// Firebase Functions related to event management
+exports.addEvent = addEvent;
+exports.getEvents = getEvents;
+exports.getEventsByTeamId = getEventsByTeamId;
